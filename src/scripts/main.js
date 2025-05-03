@@ -369,9 +369,21 @@ const tableRowsStr = people
       <td>${born}</td>
       <td>${died}</td>
       <td>${died - born}</td>
-      <td>${Math.ceil(died / 100)}</td>
+      <td>${Math.ceil(died / 100)}${getOrdinalSuffix(Math.ceil(died / 100))} century</td>
     </tr>`;
   })
   .join('');
 
-tableElement.insertAdjacentHTML('beforeend', `<tbody>${tableRowsStr}</tbody>`);
+if (tableElement) {
+  tableElement.insertAdjacentHTML(
+    'beforeend',
+    `<tbody>${tableRowsStr}</tbody>`,
+  );
+}
+
+function getOrdinalSuffix(n) {
+  const s = ['th', 'st', 'nd', 'rd'];
+  const v = n % 100;
+
+  return s[(v - 20) % 10] || s[v] || s[0];
+}
